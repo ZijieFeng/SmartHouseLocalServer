@@ -42,10 +42,15 @@ public class LogIn implements Runnable {
 	private void loginHandler(ArrayList usernamePassword){
 			try{
 				System.out.println("loginHandler");
-				if(authenticationIsCorrect(usernamePassword.get(0).toString(), usernamePassword.get(1).toString())){
+				System.out.println("usernamePassword.size() == "+usernamePassword.size());
+				for(int i=0;i<usernamePassword.size();i++){
+					System.out.println("\n\nusernamePassword.get("+i+")) == "+usernamePassword.get(i)+"\n\n");
+				}
+				if(usernamePassword.isEmpty()==false && authenticationIsCorrect(usernamePassword.get(0).toString(),usernamePassword.get(1).toString())==true){
 					User user=new User(socket,"9310101337");
 			        Thread login =new Thread(user,"ssn");
 			        login.start();
+			        System.out.println("Has been sent away to User");
 			        Thread.currentThread().stop();//ok
 				}else{
 					ArrayList result = new ArrayList();
@@ -57,12 +62,14 @@ public class LogIn implements Runnable {
 			}
 	}
 	
-	private boolean authenticationIsCorrect(String userName, String password){
-		System.out.println("userName: " + userName);
+	private boolean authenticationIsCorrect(String username, String password){
+		System.out.println("userName: " + username);
 		System.out.println("password: " + password);
-		if(userName.equals("username") && password.equals("password")){
+		if(username.equals("username") && password.equals("password")){
+			System.out.println("authenticationIsCorrect("+username+", "+password+") == return true;");
 			return true;
 		}else{
+			System.out.println("authenticationIsCorrect("+username+", "+password+") == return false;");
 			return false;
 		}
 		
@@ -72,7 +79,7 @@ public class LogIn implements Runnable {
     
 	private String getStringInputFromUser() {
 		System.out.println(Thread.currentThread().getName()
-				+ " är inne i getInputFromUser() ");
+				+ " ï¿½r inne i getInputFromUser() ");
 		String input = "";
 		try {
 			serverInput = new DataInputStream(socket.getInputStream());
@@ -88,7 +95,7 @@ public class LogIn implements Runnable {
 
 	private void sendStringOutputToUser(String output) {
 		System.out.println(Thread.currentThread().getName()
-				+ " är inne i sendOutputToUser(String output) ");
+				+ " ï¿½r inne i sendOutputToUser(String output) ");
 		try {
 			serverOutput = new DataOutputStream(socket.getOutputStream());
 			serverOutput.writeUTF(output);

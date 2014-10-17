@@ -3,15 +3,22 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class UserDb {
-	private String ipAdress = "localhost";
+	private String url = "jdbc:mysql://localhost:3306/";
+	private String dbName = "localdatabase";
+	private String driver = "com.mysql.jdbc.Driver";
+	private String userName = "root";
+	private String password = "t02h1844";
+	
+	/*private String ipAdress = "localhost";
 	private String port = "3307";
 	private String url = "jdbc:mysql://" + ipAdress + ":" + port + "/";
 	private String dbName = "localdatabase";
 	private String driver = "com.mysql.jdbc.Driver";
 	private String userName = "root";
-	private String password = "root321";
+	private String password = "root321";*/
 	private Connection conn;
 	private Statement st;
 	private ResultSet res;
@@ -40,9 +47,9 @@ public class UserDb {
 		System.out.print("Trying to connect to database . . . ");
 		try {
 
-			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager
-					.getConnection(url + dbName, userName, password);
+			Class.forName(driver).newInstance();
+			conn = DriverManager.getConnection(url+dbName,userName,password);
+			st = conn.createStatement();
 			System.out.println("Connected!!!");
 		} catch (Exception e) {
 			System.out.print("Couldn't connect.");
@@ -60,42 +67,54 @@ public class UserDb {
 		}
 	}
 
-	public String toggleDevice(int deviceID, boolean state) {
+	public ArrayList toggleDevice(int deviceID, boolean state) {
+		ArrayList toggleList = new ArrayList();
 		connect();
+		
 		System.out.println("entered ToggleDevice");
 		// Need to insert condition so user can only users with permission can
 		String update1 = "UPDATE devices\n" + "SET deviceState = " + state
 				+ "\n"
 				+ "WHERE deviceId =(Select  deviceId \n"
 				+ "FROM Permissions \n"
-				+ "WHERE Permissions.userSSN = '9910101437' \n" // laterUser.SSN
+				+ "WHERE Permissions.userSSN = '879724-6009' \n" // laterUser.SSN
 				+ "AND Permissions.deviceId = " + deviceID + "\n"
 				+ "AND Permissions.isAllowed = true);";
 
-		String query = "SELECT isAllowed\n" + "FROM permissions\n"
-				+ "WHERE userssn = '9910101437'\n" // Later user.ssn
-				+ "AND deviceId = " + deviceID + ";";
-		String update = "UPDATE devices\n" + "SET deviceState = " + state
-				+ "\n" + "WHERE deviceId = " + deviceID;
-		System.out.println("******UPDATE****** \n" + update
-				+ "\n******************");
+		String query = "SELECT isAllowed\n" + "FROM Permissions WHERE userSSN = '879724-6009' AND deviceId = " + deviceID + ";";
+		String update = "UPDATE Devices SET deviceState="+state+" WHERE deviceId = "+deviceID+";";
+		/*System.out.println("******UPDATE****** \n" + update
+				+ "\n******************");*/
 		try {
-			st = conn.createStatement();
+			System.out.println("1");
+			//st = conn.createStatement();
+			System.out.println("2");
 			res = st.executeQuery(query);
+			System.out.println("3");
 			res.next();
 			boolean isAllowed = res.getBoolean("isAllowed");
-			if (isAllowed == true) {
-				// arduino Togglemethod here
+			System.out.println("4");
+			if (isAllowed == true){
+				System.out.println("5");
 				st.executeUpdate(update);
-				addDeviceHistory(deviceID, state);
+				System.out.println("6");
+				res=st.executeQuery("SELECT devicename,DeviceState FROM Devices WHERE deviceId="+deviceID+";");
+				res.next();
+				System.out.println("7");
+				toggleList.add(res.getString("deviceName"));
+				System.out.println("8");
+				toggleList.add(res.getBoolean("deviceState"));
+				System.out.println("9");
+				//addDeviceHistory(deviceID, state);
 			}
 			System.out.println("Update Succesful");
+			System.out.println("10");
 		} catch (Exception e) {
 			System.out.print(e);
 		} finally {
 			disconnect();
 		}
-		return "OKEY";
+		return toggleList;
 	}
 
 	private void addDeviceHistory(int deviceID, boolean state) {
@@ -208,7 +227,51 @@ public class UserDb {
 			System.out.print(e);
 		}
 	}
+	
+	public ArrayList checkDevice(int deviceID) {
+		connect();
+		System.out.println("1");
+		ArrayList checkList = new ArrayList();
+		try {
+			System.out.println("1");
+			res = st.executeQuery("SELECT deviceName,deviceState FROM Devices WHERE deviceId="+deviceID+";");
+			res.next();
+			System.out.println("1");
+			checkList.add(res.getString("Devices.deviceName"));
+			checkList.add(res.getBoolean("Devices.deviceState"));	
+			System.out.println("Update Succesful");
+		} catch (Exception e) {
+			System.out.print(e);
+		} finally {
+			disconnect();
+		}
+		return checkList;
+	}
+	
 
+	public ArrayList checkAllDevices() {
+		ArrayList checkAllList = new ArrayList();
+		connect();
+		try {
+			checkAllList.add("checkAllDevices");
+			res = st.executeQuery("SELECT deviceName, deviceState FROM Devices WHERE deviceId>0");
+			while (res.next()) {// /////////
+				checkAllList.add(res.getString("deviceName"));
+				checkAllList.add(Boolean.toString(res.getBoolean("deviceState")));
+			}
+			System.out.println("Update Succesful");
+		} catch (Exception e) {
+			System.out.print(e);
+			checkAllList=null;
+		} finally {
+			disconnect();
+		}
+		for(int i=0;i<checkAllList.size();i++){
+			System.out.println("checkAllList.get("+i+")"+checkAllList.get(i));
+		}
+		return checkAllList;
+	}
+	
 	public void defaultInsert() {
 	}
 }

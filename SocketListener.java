@@ -11,7 +11,6 @@ public class SocketListener {
 	private ServerSocket serversocket=null;
 	private Socket socket=null;
 	private int PORT=1111;
-	private String SERVER="127.0.0.1";
 	
 	public static void main(String[] args) {
 //		UserDb UsDb = new UserDb(null); //

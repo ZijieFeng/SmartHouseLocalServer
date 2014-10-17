@@ -38,7 +38,8 @@ public class Admin implements Runnable {
 
 	private void taskHandler(ArrayList task) {
 		System.out.println("taskHandler");
-		if (task.get(0).equals("amdmin metod")) {// reacts on if-stmt
+		if (task.get(0).equals("")) {// reacts on if-stmt
+			//db_queue.adb.någonmetod();
 			ArrayList send = new ArrayList();
 			//sendStringOutputToUser(db_queue.adb.metod(parameter));// sends arrayList
 		}
