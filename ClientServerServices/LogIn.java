@@ -1,3 +1,4 @@
+package ClientServerServices;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -12,7 +13,7 @@ public class LogIn{
 
 	public ArrayList getSSN_WhenClientHasSuccessfullyLoggedIn(String authentication){
 		ArrayList authenticationList=convertStringToArrayList(authentication);		
-		return getAuthenticationResult(authenticationList.get(0).toString(),authenticationList.get(1).toString());		
+		return getAuthenticationResult(authenticationList.get(1).toString(),authenticationList.get(2).toString());		
 	}
 	
 	private ArrayList getAuthenticationResult(String username, String password){
@@ -22,11 +23,12 @@ public class LogIn{
 		if(username.equals("username") && password.equals("password")){
 			System.out.println("authenticationIsCorrect("+username+", "+password+") == return true;");
 			loginList.add("870724-0923");
-			loginList.add(5);
+			loginList.add(0);
+			
 			return loginList;
 		}else{
 			System.out.println("authenticationIsCorrect("+username+", "+password+") == return false;");
-			loginList.add("authenticat/*ion_faild!");
+			loginList.add("FAILD");
 			return loginList;
 		}	
 	}

@@ -15,3 +15,16 @@
 >>>>>>> origin/master
 /UserClass.class
 /RealTimeListenerArdunio.class
+/ArdunioHandler.class
+/ClientQueueListener.class
+/AurdinoIoQueue.class
+/AurdinoRealTimeIoQueueListener.class
+/AurdinoIO_Queue.class
+/AurdinoRealTimeIO_QueueListener.class
+/ClientOutputQueue.class
+/AurdinoRealTimeOutputQueueListener.class
+/AurdinoInputOutputQueue.class
+/ClientInputQueueListener.class
+/AurdinoRealTimeInputQueueListener.class
+/StartServer.class
+/StartLocalServer.class

@@ -1,9 +1,10 @@
+package ClientDatabaseServices;
 import java.sql.*;
 
 public class DbQueue {
 	
-	UserDb udb = null;
-	AdminDb adb = null;
+	public UserDb udb = null;
+	public AdminDb adb = null;
 
 	public DbQueue(String userOrAdmin) {//
 		if (userOrAdmin.equals("user")) {

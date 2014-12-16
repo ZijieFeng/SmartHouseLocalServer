@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-import Protocols.WriteQueue;
+import Queue.WriteQueue;
 
 
 public class AurdinoRealTimeInputQueueListener implements Runnable {

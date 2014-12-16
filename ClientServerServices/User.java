@@ -1,3 +1,4 @@
+package ClientServerServices;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -8,6 +9,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import ClientDatabaseServices.DbQueue;
 
 public class User{
 	private DataInputStream serverInput;// PRELIMINARY PROTOCOL FUNCTION
@@ -31,13 +34,7 @@ public class User{
 		}
 		if (task.get(0).equals("toggleDevice") &&  task.size()==3) {// reacts on if-stmt
 			System.out.println("inne i toggleDevice");
-			/*int nr=Integer.parseInt(task.get(1).toString());
-			boolean bool=Boolean.parseBoolean(task.get(2).toString());
-			*/
-			String test=convertArrayListToString(db_queue.udb.toggleDevice(Integer.parseInt(task.get(1).toString()),Boolean.parseBoolean(task.get(2).toString()) ));
-				
-			return test;		
-		
+			return convertArrayListToString(db_queue.udb.toggleDevice(Integer.parseInt(task.get(1).toString()),Integer.parseInt(task.get(2).toString()) ));		
 		}else if(task.get(0).equals("checkDevice") && task.isEmpty()==false && task.size()==2){	
 			String print=convertArrayListToString(db_queue.udb.checkDevice(Integer.parseInt(task.get(1).toString())));
 			System.out.println("checkDevice("+Integer.parseInt(task.get(1).toString())+") == "+print);
@@ -47,7 +44,7 @@ public class User{
 		}else if(task.get(0).equals("checkAllDevices") && task.isEmpty()==false && task.size()==1){
 			return convertArrayListToString(db_queue.udb.checkAllDevices());
 		}//else
-		return "TotallyWrong:";	
+		return "Incorrect Command!:";	
 	}
 	
 	public String convertArrayListToString(ArrayList arrayList) {
